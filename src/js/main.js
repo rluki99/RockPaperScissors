@@ -1,3 +1,7 @@
+const userScore = document.querySelector('.user-score')
+const computerScore = document.querySelector('.computer-score')
+const winnerRound = document.querySelector('.winner-round')
+
 let answer
 let computerCount = 0
 let userCount = 0
@@ -13,43 +17,50 @@ const getComputerChoice = () => {
 	}
 }
 
-const playSingleRound = () => {
-	answer = prompt('Rock Paper or Scissors').toLowerCase().trim()
+const playSingleRound = (userChoice) => {
+	answer = userChoice.value
+	console.log(answer);
 	const computerDraw = getComputerChoice()
 
-	// console.log(`${answer}, user choice`);
-	// console.log(`${computerDraw}, computer choice`);
+	console.log(`${answer}, user choice`);
+	console.log(`${computerDraw}, computer choice`);
 
 	if (computerDraw === answer) {
-		return 'Its tie'
+		winnerRound.textContent = 'Its a tie'
 	} else if (computerDraw === 'rock' && answer === 'paper') {
 		userCount++
-		return 'Computer lose'
+		userScore.textContent = userCount
+		winnerRound.textContent = 'User wins'
 	} else if (computerDraw === 'rock' && answer === 'scissors') {
 		computerCount++
-		return 'Computer win'
+		computerScore.textContent = computerCount
+		winnerRound.textContent = 'Computer wins'
 	} else if (computerDraw === 'scissors' && answer === 'rock') {
 		userCount++
-		return 'Computer lose'
+		userScore.textContent = userCount
+		winnerRound.textContent = 'User wins'
 	} else if (computerDraw === 'scissors' && answer === 'paper') {
 		computerCount++
-		return 'Computer win'
+		computerScore.textContent = computerCount
+		winnerRound.textContent = 'Computer wins'
 	} else if (computerDraw === 'paper' && answer === 'rock') {
 		computerCount++
-		return 'Computer win'
+		computerScore.textContent = computerCount
+		winnerRound.textContent = 'Computer wins'
 	} else if (computerDraw === 'paper' && answer === 'scissors') {
 		userCount++
-		return 'Computer lose'
+		userScore.textContent = userCount
+		winnerRound.textContent = 'User wins'
 	}
 }
 
-const playGame = () => {
-	for (let i = 0; i < 5; i++) {
-		console.log(playSingleRound())
-	}
+// const playGame = () => {
+// 	for (let i = 0; i < 5; i++) {
+// 		console.log(playSingleRound())
+// 	}
 
-	console.log(`${computerCount} computer count`)
-	console.log(`${userCount} user count`)
-}
+// 	console.log(`${computerCount} computer count`)
+// 	console.log(`${userCount} user count`)
+// }
 
-playGame()
+// playGame()

@@ -1,10 +1,14 @@
+const buttons = document.querySelectorAll('.btn')
 const userScore = document.querySelector('.user-score')
 const computerScore = document.querySelector('.computer-score')
 const winnerRound = document.querySelector('.winner-round')
+const winnerGame = document.querySelector('.winner-game')
+const resetBtn = document.querySelector('.reset-btn')
 
 let answer
 let computerCount = 0
 let userCount = 0
+let rounds = 0
 
 const getComputerChoice = () => {
 	const random = Math.floor(Math.random() * 3) + 1
@@ -18,13 +22,45 @@ const getComputerChoice = () => {
 }
 
 const playSingleRound = (userChoice) => {
-	answer = userChoice.value
-	console.log(answer);
-	const computerDraw = getComputerChoice()
+	if (rounds < 5) {
+		resetButtonColor()
+		answer = userChoice.value
+		const computerDraw = getComputerChoice()
 
-	console.log(`${answer}, user choice`);
-	console.log(`${computerDraw}, computer choice`);
+		changeButtonColor(userChoice)
+		switch (computerDraw) {
+			case 'rock':
+			  changeButtonColor(document.getElementById('rock-comp'));
+			  break;
+			case 'paper':
+			  changeButtonColor(document.getElementById('paper-comp'));
+			  break;
+			case 'scissors':
+			  changeButtonColor(document.getElementById('scissors-comp'));
+			  break;
+			default:
+			  break;
+		  }
 
+		checkResult(computerDraw, answer)
+
+		rounds++
+	}
+
+	if (rounds === 5) {
+		resetBtn.style.display = 'block'
+
+		if (userCount > computerCount) {
+			winnerGame.textContent = 'User won the game!!'
+		} else if (userCount === computerCount) {
+			winnerGame.textContent = 'There is no winnter!! TIE!!!'
+		} else {
+			winnerGame.textContent = 'Computer won the game :('
+		}
+	}
+}
+
+const checkResult = (computerDraw, answer) => {
 	if (computerDraw === answer) {
 		winnerRound.textContent = 'Its a tie'
 	} else if (computerDraw === 'rock' && answer === 'paper') {
@@ -54,13 +90,26 @@ const playSingleRound = (userChoice) => {
 	}
 }
 
-// const playGame = () => {
-// 	for (let i = 0; i < 5; i++) {
-// 		console.log(playSingleRound())
-// 	}
+const resetGame = () => {
+	computerCount = 0
+	userCount = 0
+	rounds = 0
+	winnerRound.textContent = ''
+	winnerGame.textContent = ''
+	userScore.textContent = userCount
+	computerScore.textContent = computerCount
+	resetBtn.style.display = 'none'
+	resetButtonColor()
+}
 
-// 	console.log(`${computerCount} computer count`)
-// 	console.log(`${userCount} user count`)
-// }
+const changeButtonColor = (button) => {
+	button.style.backgroundColor = 'rgba(225, 195, 30, 0.44)'
+}
 
-// playGame()
+const resetButtonColor = () => {
+	buttons.forEach((button) => {
+		button.style.backgroundColor = ''
+	})
+}
+
+resetBtn.addEventListener('click', resetGame)
